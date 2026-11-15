@@ -8,8 +8,10 @@
             "name": "Matchup Shuckle",
             "type": "coreclr",
             "request": "launch",
+            "preLaunchTask": "dotnet: build",
             "program": "${workspaceFolder}/PokeMatchup/bin/Debug/net10.0/PokeMatchup.dll",
-            "args": ["matchup", "shuckle"]
+            "args": ["matchup", "shuckle"],
+            "console": "integratedTerminal"
         }
     ]
 }
