@@ -13,14 +13,15 @@ namespace PokeMatchup
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<Pokemon?> GetPokemon(string name)
+        public Task<Pokemon?> GetPokemon(string name)
         {
+            Thread.Sleep(1000); // Simulate network latency
             Pokemon pokemon = new(213, "shuckle",
             [
                 new(1, new NamedAPIResource("bug", "https://pokeapi.co/api/v2/type/7/")),
                 new(2, new NamedAPIResource("rock", "https://pokeapi.co/api/v2/type/6/")),
             ]);
-            return pokemon;
+            return Task.FromResult<Pokemon?>(pokemon);
         }
 
         /// <summary>
@@ -28,8 +29,9 @@ namespace PokeMatchup
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public async Task<DamageRelations?> GetTypeRelations(PokemonTypes type)
+        public Task<DamageRelations?> GetTypeRelations(PokemonTypes type)
         {
+            Thread.Sleep(1000); // Simulate network latency
             DamageRelations damageRelations = new(
                 [],
                 [new("fighting", "https://pokeapi.co/api/v2/type/2/"), new("flying", "https://pokeapi.co/api/v2/type/3/"), new("poison", "https://pokeapi.co/api/v2/type/4/"), new("ghost", "https://pokeapi.co/api/v2/type/8/"), new("steel", "https://pokeapi.co/api/v2/type/9/"), new("fire", "https://pokeapi.co/api/v2/type/10/"), new("fairy", "https://pokeapi.co/api/v2/type/18/")],
@@ -38,7 +40,7 @@ namespace PokeMatchup
                 [new("fighting", "https://pokeapi.co/api/v2/type/2/"), new("ground", "https://pokeapi.co/api/v2/type/5/"), new("grass", "https://pokeapi.co/api/v2/type/12/")],
                 [new("flying", "https://pokeapi.co/api/v2/type/3/"), new("rock", "https://pokeapi.co/api/v2/type/6/"), new("fire", "https://pokeapi.co/api/v2/type/10/")]
             );
-            return damageRelations;
+            return Task.FromResult<DamageRelations?>(damageRelations);
         }
 
         /// <summary>
@@ -46,8 +48,9 @@ namespace PokeMatchup
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<List<PokemonSpeciesVariety>> GetVarietiesBySpecies(string name)
+        public Task<List<PokemonSpeciesVariety>> GetVarietiesBySpecies(string name)
         {
+            Thread.Sleep(1000); // Simulate network latency
             List<PokemonSpeciesVariety> psv = [
                 new PokemonSpeciesVariety(
                     true,
@@ -78,7 +81,7 @@ namespace PokeMatchup
                     )
                 )
             ];
-            return psv;
+            return Task.FromResult(psv);
         }
     }
 }

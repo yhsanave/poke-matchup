@@ -22,7 +22,11 @@ internal class MatchupCommand(
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellation)
     {
-        List<PokemonSpeciesVariety> varieties = await _dataService.GetVarietiesBySpecies(settings.Name).Spinner();
+        List<PokemonSpeciesVariety> varieties = await _console.Status().StartAsync("Getting species: " + settings.Name + "...", async ctx =>
+        {
+            return await _dataService.GetVarietiesBySpecies(settings.Name);
+        });
+
         if (!(varieties?.Any() ?? false))
         {
             _console.MarkupLine("[red]Pokemon not found: [/]" + settings.Name);
@@ -39,43 +43,52 @@ internal class MatchupCommand(
                     .AddChoices(options)
                 );
         }
-        Pokemon pokemon = await _dataService.GetPokemon(selection).Spinner() ?? throw new Exception("Pokemon not found: " + selection);
-        Matchup matchup = await GetMatchups(pokemon.Types).Spinner();
+
+        Pokemon pokemon = await _console.Status().StartAsync("Getting Pokemon: " + selection, async ctx =>
+        {
+            return await _dataService.GetPokemon(selection) ?? throw new Exception("Pokemon not found: " + selection);
+        });
+        Matchup matchup = await GetMatchups(pokemon.Types);
         _console.Write(BuildMatchupPanel(pokemon, matchup));
         return 0;
     }
 
     public async Task<Matchup> GetMatchups(List<PokemonTypes> types)
     {
-        // Build matchup lists for each of the pokemon's types
-        List<Matchup> matchups = [];
-        foreach (PokemonTypes type in types)
+        return await _console.Status().StartAsync("Getting type relationships...", async ctx =>
         {
-            DamageRelations? typeRelations = await _dataService.GetTypeRelations(type) ?? throw new Exception("Type Relations not found");
-            List<NamedAPIResource> strong = [.. typeRelations.NoDamageFrom, .. typeRelations.HalfDamageFrom, .. typeRelations.DoubleDamageTo];
-            List<NamedAPIResource> weak = [.. typeRelations.NoDamageTo, .. typeRelations.HalfDamageTo, .. typeRelations.DoubleDamageFrom];
-            matchups.Add(new Matchup()
+            // Build matchup lists for each of the pokemon's types
+            List<Matchup> matchups = [];
+            foreach (PokemonTypes type in types)
             {
-                // If the type is both weak and strong vs another type, consider it neutral and include it in neither.
-                Strengths = [.. strong.Distinct().Where(t => !weak.Contains(t)).Select(t => t.Name)],
-                Weaknesses = [.. weak.Distinct().Where(t => !strong.Contains(t)).Select(t => t.Name)]
-            });
-        }
-
-        // If the pokemon has more than one type, merge the two matchups together, removing duplicates
-        if (matchups.Count > 1)
-        {
-            List<string> strong = [.. matchups.SelectMany(m => m.Strengths).Distinct()];
-            List<string> weak = [.. matchups.SelectMany(m => m.Weaknesses).Distinct()];
-            return new Matchup()
+                ctx.Status("Getting type relationships for " + MarkupType(type.Type.Name) + " type...");
+                DamageRelations? typeRelations = await _dataService.GetTypeRelations(type) ?? throw new Exception("Type Relations not found");
+                List<NamedAPIResource> strong = [.. typeRelations.NoDamageFrom, .. typeRelations.HalfDamageFrom, .. typeRelations.DoubleDamageTo];
+                List<NamedAPIResource> weak = [.. typeRelations.NoDamageTo, .. typeRelations.HalfDamageTo, .. typeRelations.DoubleDamageFrom];
+                matchups.Add(new Matchup()
+                {
+                    // If the type is both weak and strong vs another type, consider it neutral and include it in neither.
+                    Strengths = [.. strong.Distinct().Where(t => !weak.Contains(t)).Select(t => t.Name)],
+                    Weaknesses = [.. weak.Distinct().Where(t => !strong.Contains(t)).Select(t => t.Name)]
+                });
+            }
+            
+            ctx.Status("Processing relationships...");
+            // If the pokemon has more than one type, merge the two matchups together, removing duplicates
+            if (matchups.Count > 1)
             {
-                // If the pokemon is both weak and strong vs a type, consider it neutral and include it in neither.
-                Strengths = [.. strong.Distinct().Where(t => !weak.Contains(t))],
-                Weaknesses = [.. weak.Distinct().Where(t => !strong.Contains(t))]
-            };
-        }
+                List<string> strong = [.. matchups.SelectMany(m => m.Strengths).Distinct()];
+                List<string> weak = [.. matchups.SelectMany(m => m.Weaknesses).Distinct()];
+                return new Matchup()
+                {
+                    // If the pokemon is both weak and strong vs a type, consider it neutral and include it in neither.
+                    Strengths = [.. strong.Distinct().Where(t => !weak.Contains(t))],
+                    Weaknesses = [.. weak.Distinct().Where(t => !strong.Contains(t))]
+                };
+            }
 
-        return matchups.First();
+            return matchups.First();
+        });
     }
 
     /// <summary>

@@ -8,7 +8,7 @@ namespace PokeMatchup
         private static async Task<int> Main(string[] args)
         {
             var services = new ServiceCollection();
-            services.AddSingleton<IDataService, PokeApiService>();
+            services.AddSingleton<IDataService, MockDataService>();
 
             var registrar = new TypeRegistrar(services);
 
