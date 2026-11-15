@@ -1,0 +1,19 @@
+info:
+  name: Pokemon Species
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: https://pokeapi.co/api/v2/pokemon-species/:id_name/
+  params:
+    - name: id_name
+      value: shuckle
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

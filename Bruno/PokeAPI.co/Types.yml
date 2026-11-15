@@ -1,0 +1,19 @@
+info:
+  name: Types
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: https://pokeapi.co/api/v2/type/:id_name
+  params:
+    - name: id_name
+      value: bug
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

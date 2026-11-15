@@ -1,0 +1,18 @@
+info:
+  name: Abilities
+  type: http
+
+http:
+  method: GET
+  url: https://pokeapi.co/api/v2/ability/:id_name/
+  params:
+    - name: id_name
+      value: levitate
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
