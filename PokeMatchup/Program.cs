@@ -8,15 +8,15 @@ namespace PokeMatchup
         private static async Task<int> Main(string[] args)
         {
             var services = new ServiceCollection();
-            services.AddSingleton<IDataService, MockDataService>();
+            services.AddSingleton<IDataService, PokeApiService>();
 
             var registrar = new TypeRegistrar(services);
 
             var app = new CommandApp(registrar);
+            app.SetDefaultCommand<MatchupCommand>();
             app.Configure(config =>
             {
-                config.SetApplicationName("poke");
-                config.AddCommand<MatchupCommand>("matchup");
+                config.SetApplicationName("PokeMatchup");
                 config.AddBranch("debug", debug =>
                 {
                     debug.SetDescription("Debug commands");
@@ -34,14 +34,14 @@ public sealed class TypeRegistrar(IServiceCollection services) : ITypeRegistrar
 {
     public ITypeResolver Build() => new TypeResolver(services.BuildServiceProvider());
 
-    public void Register(System.Type service, System.Type implementation) => services.AddSingleton(service, implementation);
+    public void Register(Type service, Type implementation) => services.AddSingleton(service, implementation);
 
-    public void RegisterInstance(System.Type service, object implementation) => services.AddSingleton(service, implementation);
+    public void RegisterInstance(Type service, object implementation) => services.AddSingleton(service, implementation);
 
-    public void RegisterLazy(System.Type service, Func<object> factory) => services.AddSingleton(service, _ => factory());
+    public void RegisterLazy(Type service, Func<object> factory) => services.AddSingleton(service, _ => factory());
 }
 
 public sealed class TypeResolver(IServiceProvider provider) : ITypeResolver
 {
-    public object? Resolve(System.Type? type) => type == null ? null : provider.GetService(type);
+    public object? Resolve(Type? type) => type == null ? null : provider.GetService(type);
 }

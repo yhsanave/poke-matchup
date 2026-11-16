@@ -3,15 +3,19 @@ using PokeMatchup;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
+namespace PokeMatchup;
+
 [Description("Print a formatted list of types.")]
-internal class TypesCommand : Command<TypesCommand.Settings>
+public class TypesCommand(IAnsiConsole console) : Command<TypesCommand.Settings>
 {
+    private readonly IAnsiConsole _console = console;
+
     public class Settings : CommandSettings { }
 
     public override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         var types = Enum.GetNames<PokeTypes>();
-        List<string> formattedTypes = new List<string>();
+        List<string> formattedTypes = [];
         foreach (var t in types)
         {
             var type = MatchupCommand.MarkupType(t);
@@ -20,7 +24,7 @@ internal class TypesCommand : Command<TypesCommand.Settings>
 
         for (var i = 0; i < 20; i += 5)
         {
-            AnsiConsole.MarkupLine(string.Join("", formattedTypes.Slice(i, 5)));
+            _console.MarkupLine(string.Join("", formattedTypes.Slice(i, 5)));
         }
 
         return 0;

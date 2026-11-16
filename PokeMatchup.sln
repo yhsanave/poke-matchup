@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeMatchup", "PokeMatchup\PokeMatchup.csproj", "{75C1A2BD-B26D-47C5-A764-EB4C95E56669}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeMatchup.Tests", "PokeMatchup.Tests\PokeMatchup.Tests.csproj", "{F6748604-F68B-4515-BDC1-6FA872388CAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{75C1A2BD-B26D-47C5-A764-EB4C95E56669}.Release|x64.Build.0 = Release|Any CPU
 		{75C1A2BD-B26D-47C5-A764-EB4C95E56669}.Release|x86.ActiveCfg = Release|Any CPU
 		{75C1A2BD-B26D-47C5-A764-EB4C95E56669}.Release|x86.Build.0 = Release|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Debug|x64.Build.0 = Debug|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Debug|x86.Build.0 = Debug|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Release|x64.ActiveCfg = Release|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Release|x64.Build.0 = Release|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6748604-F68B-4515-BDC1-6FA872388CAC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

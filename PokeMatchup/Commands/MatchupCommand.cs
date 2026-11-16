@@ -1,14 +1,15 @@
 using System.ComponentModel;
 using System.Globalization;
-using PokeMatchup;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
+namespace PokeMatchup;
+
 [Description("Check a Pokemon's type matchups.")]
-internal class MatchupCommand(
-        IDataService dataService,
-        IAnsiConsole console
-        ) : AsyncCommand<MatchupCommand.Settings>
+public class MatchupCommand(
+    IDataService dataService,
+    IAnsiConsole console
+    ) : AsyncCommand<MatchupCommand.Settings>
 {
     private readonly IDataService _dataService = dataService;
     private readonly IAnsiConsole _console = console;
@@ -72,7 +73,7 @@ internal class MatchupCommand(
                     Weaknesses = [.. weak.Distinct().Where(t => !strong.Contains(t)).Select(t => t.Name)]
                 });
             }
-            
+
             ctx.Status("Processing relationships...");
             // If the pokemon has more than one type, merge the two matchups together, removing duplicates
             if (matchups.Count > 1)
