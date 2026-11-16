@@ -8,7 +8,7 @@ Uses [PokeAPI](https://pokeapi.co) for pokemon data.
 
 ### Matchup
 
-`PokeMatchup.exe <name>` to check a pokemon's type matchups.
+`PokeMatchup <name>` to check a pokemon's type matchups.
 
 If a pokemon has multiple forms, enter the species name and it will prompt you to select from a list of available forms.
 
@@ -34,4 +34,4 @@ Additionally, if a pokemon would be both weak and strong against a type (e.g. a 
 
 ### Debug
 
-`PokeMatchup.exe debug types` will print a list of all available types, for testing type colors.
+`PokeMatchup debug types` will print a list of all available types, for testing type colors.
